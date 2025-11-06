@@ -25,7 +25,7 @@ cin >> c.id;
 
 for (int i = 0; i < totalClientes; i++) { //Verificar se já consta o ID cadastrado de cliente
     if (clientes[i].id == c.id) {
-        cout << "ID j[a consta como cadastrado!\n";
+        cout << "ID ja consta como cadastrado!\n";
         return;
     }
 }
@@ -110,6 +110,7 @@ int main() {
 return 0;
 
 }
+
 
 
 
