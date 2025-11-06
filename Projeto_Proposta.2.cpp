@@ -1,10 +1,6 @@
 #include <iostream>
 #include <string>
 
-#define N 5
-
-int pos = 0;
-
 using namespace std;
 
 struct Cliente {
@@ -18,18 +14,25 @@ struct Filme {
     string titulo;
     string genero;
     string ano;
+    string idCliente; // Para guarda o id do cliente que alugou o filme
+
 };
 
-void mostraMenu(){
-    cout << "Menu de opcoes:\n";
-    cout << "1. Cadastrar cliente.\n";
-    cout << "2. Cadastra filme.\n";
-    cout << "3. Listar clientes.\n";
-    cout << "4. Listar filmes.\n";
-    cout << "5. Buscar filmes por clientes.\n";
-    cout << "6. Relatorio geral.\n";
-    cout << "7. Sair.\n";
+void cadastrarCliente(Cliente clientes[], &totalClientes) {
+Cliente c;
+cout << "ID do cliente: ";
+cin >> c.id;
+
+for (int i = 0; i < totalClientes; i++) { //Verificar se já consta o ID cadastrado de cliente
+    if (clientes[i].id == c.id) {
+        cout << "ID j[a consta como cadastrado!\n";
+        return;
+    }
 }
+
+//Continuar a partir daqui .........
+
+
 
 void mostrar(Cliente vet[]) {
     for(int i=0; i<pos; i++) {
@@ -107,6 +110,7 @@ int main() {
 return 0;
 
 }
+
 
 
 
