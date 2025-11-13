@@ -30,6 +30,17 @@ for (int i = 0; i < totalClientes; i++) { //Verificar se já consta o ID cadastr
     }
 }
 
+void cadastrarFilme(Filme filmes[], int &qtdFilmes, Cliente clientes[], int qtdClientes) {
+    Filme f;
+    cout << "Codigo do filme: ";
+    cin >> f.codigo;
+for (int i = 0; i < qtdFilmes; i++) {
+        if (filmes[i].codigo == f.codigo) {
+            cout << "Codigo ja cadastrado!\n";
+            return;
+        }
+    }
+
 //Continuar a partir daqui .........
 
 
@@ -110,6 +121,7 @@ int main() {
 return 0;
 
 }
+
 
 
 
