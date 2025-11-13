@@ -104,10 +104,10 @@ void listarFilmes(Filme filmes[], int qtdFilmes, Cliente clientes[], int qtdClie
     }
 
     for (int i = 0; i < qtdFilmes; i++) {
-        cout << "Codigo: " << filmes[i].codigo
-             << "Titulo: " << filmes[i].titulo
-             << "Genero: " << filmes[i].genero
-             << "Ano: " << filmes[i].ano;
+        cout << "Codigo: " << filmes[i].codigo << endl;
+        cout << "Titulo: " << filmes[i].titulo << endl;
+        cout << "Genero: " << filmes[i].genero << endl;
+        cout << "Ano: " << filmes[i].ano << endl;
 
         if (filmes[i].idCliente != 0) {
             // procura o nome do cliente
@@ -177,13 +177,13 @@ int main() {
     Filme filmes[100];
     int qtdClientes = 0;
     int qtdFilmes = 0;
-
-
     int opcao;
 
-    mostraMenu();
-    cin >> opcao;
-    while (opcao != 0) {
+    do {
+        mostraMenu();
+        cout << "Escolha uma opcao: ";
+        cin >> opcao;
+
         switch (opcao) {
             case 1:
                 cadastrarCliente(clientes, qtdClientes);
@@ -208,16 +208,16 @@ int main() {
                 relatorioGeral(clientes, qtdClientes, filmes, qtdFilmes);
                 break;
             case 7:
-                cout << "Saindo...\n";
                 break;
             default:
                 cout << "Opcao invalida!\n";
         }
 
     } while (opcao != 7);
-    return 0;
 
+    return 0;
 }
+
 
 
 
