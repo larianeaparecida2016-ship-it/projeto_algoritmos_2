@@ -18,18 +18,6 @@ struct Filme {
     int idCliente;
 };
 
-void mostraMenu(){
-    cout << "Menu de opcoes:\n";
-    cout << "1. Cadastrar cliente.\n";
-    cout << "2. Cadastra filme.\n";
-    cout << "3. Listar clientes.\n";
-    cout << "4. Listar filmes.\n";
-    cout << "5. Buscar filmes por clientes.\n";
-    cout << "6. Relatorio geral.\n";
-    cout << "7. Sair.\n";
-}
-
-
 void cadastrarCliente(Cliente clientes[], int &qtdClientes) {
     Cliente c;
     cout << "ID do cliente: ";
@@ -51,6 +39,7 @@ void cadastrarCliente(Cliente clientes[], int &qtdClientes) {
     clientes[qtdClientes] = c; // Adiconar o cliente na qtdClientes
     qtdClientes++;
 }
+
 
 void cadastrarFilme(Filme filmes[], int &qtdFilmes, Cliente clientes[], int qtdClientes) {
     Filme f;
@@ -93,23 +82,142 @@ void cadastrarFilme(Filme filmes[], int &qtdFilmes, Cliente clientes[], int qtdC
     qtdFilmes++;
 }
 
-// COntinuar daqui .... (cadastrar filme)
+// listar os clientes
+void listarClientes(Cliente clientes[], int qtdClientes) {
+    if (qtdClientes == 0) {
+        cout << "Nenhum cliente cadastrado.\n";
+        return;
+    }
+
+    for (int i = 0; i < qtdClientes; i++) {
+        cout << "ID: " << clientes[i].id << endl;
+        cout << "Nome: " << clientes[i].nome << endl;
+        cout << "Telefone: " << clientes[i].telefone << endl;
+    }
+}
+
+//listar os filmes
+void listarFilmes(Filme filmes[], int qtdFilmes, Cliente clientes[], int qtdClientes) {
+    if (qtdFilmes == 0) {
+        cout << "Nenhum filme cadastrado.\n";
+        return;
+    }
+
+    for (int i = 0; i < qtdFilmes; i++) {
+        cout << "Codigo: " << filmes[i].codigo
+             << "Titulo: " << filmes[i].titulo
+             << "Genero: " << filmes[i].genero
+             << "Ano: " << filmes[i].ano;
+
+        if (filmes[i].idCliente != 0) {
+            // procura o nome do cliente
+            string nomeCliente = "Desconhecido";
+            for (int j = 0; j < qtdClientes; j++) {
+                if (clientes[j].id == filmes[i].idCliente) {
+                    nomeCliente = clientes[j].nome;
+                    break;
+                }
+            }
+            cout << "Alugado: " << nomeCliente;
+        } else {
+            cout << "Nao alugado";
+        }
+        cout << endl;
+    }
+}
+
+// buscar filmes e cliente
+void buscarFilmesPorCliente(Filme filmes[], int qtdFilmes, int idCliente) {
+    bool achou = false;
+    for (int i = 0; i < qtdFilmes; i++) {
+        if (filmes[i].idCliente == idCliente) {
+            cout << "Codigo: " << filmes[i].codigo << endl;
+            cout << "Titulo: " << filmes[i].titulo << endl;
+            achou = true;
+        }
+    }
+    if (!achou) {
+        cout << "Esse cliente nao alugou nenhum filme.\n";
+    }
+}
+
+// relatório geral
+void relatorioGeral(Cliente clientes[], int qtdClientes, Filme filmes[], int qtdFilmes) {
+    if (qtdClientes == 0) {
+        cout << "Nenhum cliente cadastrado.\n";
+        return;
+    }
+
+    for (int i = 0; i < qtdClientes; i++) {
+        int contador = 0;
+        for (int j = 0; j < qtdFilmes; j++) {
+            if (filmes[j].idCliente == clientes[i].id) {
+                contador++;
+            }
+        }
+        cout << "Cliente: " << clientes[i].nome << endl;
+        cout << "Filmes alugados: " << contador << endl;
+    }
+}
+
+void mostraMenu(){
+    cout << "Menu de opcoes:\n";
+    cout << "1. Cadastrar cliente.\n";
+    cout << "2. Cadastra filme.\n";
+    cout << "3. Listar clientes.\n";
+    cout << "4. Listar filmes.\n";
+    cout << "5. Buscar filmes por clientes.\n";
+    cout << "6. Relatorio geral.\n";
+    cout << "7. Sair.\n";
+}
 
 
+int main() {
+    Cliente clientes[100];
+    Filme filmes[100];
+    int qtdClientes = 0;
+    int qtdFilmes = 0;
 
 
+    int opcao;
 
+    mostraMenu();
+    cin >> opcao;
+    while (opcao != 0) {
+        switch (opcao) {
+            case 1:
+                cadastrarCliente(clientes, qtdClientes);
+                break;
+            case 2:
+                cadastrarFilme(filmes, qtdFilmes, clientes, qtdClientes);
+                break;
+            case 3:
+                listarClientes(clientes, qtdClientes);
+                break;
+            case 4:
+                listarFilmes(filmes, qtdFilmes, clientes, qtdClientes);
+                break;
+            case 5: {
+                int id;
+                cout << "ID do cliente: ";
+                cin >> id;
+                buscarFilmesPorCliente(filmes, qtdFilmes, id);
+                break;
+            }
+            case 6:
+                relatorioGeral(clientes, qtdClientes, filmes, qtdFilmes);
+                break;
+            case 7:
+                cout << "Saindo...\n";
+                break;
+            default:
+                cout << "Opcao invalida!\n";
+        }
 
+    } while (opcao != 7);
+    return 0;
 
-
-
-
-
-
-
-
-
-
+}
 
 
 
