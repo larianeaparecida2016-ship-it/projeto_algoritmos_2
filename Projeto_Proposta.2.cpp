@@ -14,7 +14,7 @@ struct Filme {
     string titulo;
     string genero;
     string ano;
-    string idCliente; // Para guarda o id do cliente que alugou o filme
+    string idCliente; 
 
 };
 
@@ -52,29 +52,6 @@ void mostrar(Cliente vet[]) {
         cout << "Nome: " << vet[i].nome << endl;
         cout << "Telefone: " << vet[1].telefone << endl;
     }
-}
-
-
-void CadastrarCliente(Cliente *c){
-    cout << "Cadastro de cliente";
-    cout << "ID do cliente: ";
-    getline(cin, c->id);
-    cout << "Nome: ";
-    getline(cin, c->nome);
-    cout << "Telefone: ";
-    getline(cin, c->telefone);
-}
-
-void CadastrarFilme(Filme *f){
-    cout << "Cadastro de filmes";
-    cout << "Codigo: ";
-    getline (cin, f->codigo);
-    cout << "Nome do filme: ";
-    getline(cin, f->titulo);
-    cout << "Genero do filme: ";
-    getline(cin, f->genero);
-    cout << "Ano: ";
-    getline(cin, f->ano);
 }
 
 void mostrar(Filme vet[]) {
@@ -121,6 +98,7 @@ int main() {
 return 0;
 
 }
+
 
 
 
