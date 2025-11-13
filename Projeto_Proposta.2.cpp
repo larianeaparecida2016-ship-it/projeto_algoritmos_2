@@ -52,7 +52,49 @@ void cadastrarCliente(Cliente clientes[], int &qtdClientes) {
     qtdClientes++;
 }
 
+void cadastrarFilme(Filme filmes[], int &qtdFilmes, Cliente clientes[], int qtdClientes) {
+    Filme f;
+    cout << "Codigo do filme: ";
+    cin >> f.codigo;
+
+    // verifica se já existe esse código
+    for (int i = 0; i < qtdFilmes; i++) {
+        if (filmes[i].codigo == f.codigo) {
+            return;
+        }
+    }
+
+    cout << "Titulo: ";
+    cin.ignore();
+    getline(cin, f.titulo);
+    cout << "Genero: ";
+    getline(cin, f.genero);
+    cout << "Ano: ";
+    cin >> f.ano;
+
+    cout << "ID do cliente que vai alugar (0 para nenhum): ";
+    cin >> f.idCliente;
+
+    if (f.idCliente != 0) {
+        bool achou = false;
+        for (int i = 0; i < qtdClientes; i++) {
+            if (clientes[i].id == f.idCliente) {
+                achou = true;
+                break;
+            }
+        }
+        if (!achou) {
+            cout << "Cliente nao encontrado! Filme nao cadastrado.\n";
+            return;
+        }
+    }
+
+    filmes[qtdFilmes] = f;
+    qtdFilmes++;
+}
+
 // COntinuar daqui .... (cadastrar filme)
+
 
 
 
