@@ -1,26 +1,33 @@
-
 #include <iostream>
-#include <string>
+#include <fstream>
+#include <cstring>
+
+#define MAX 3
+int posC = 0;
+int posF = 0;
+int posA = 0;
+
+
 using namespace std;
 
 
 struct Cliente {
     int id;
-    string nome;
-    string telefone;
+    char nome[50];
+    char telefone[50];
 };
 
 
 struct Filme {
     int codigo;
-    string titulo;
-    string genero;
+    char titulo[50];
+    char genero[50];
     int ano;
     int idCliente;
 };
 
 struct Ator {
-    string nomeAtor;
+    char nomeAtor[50];
 
 };
 
@@ -38,12 +45,51 @@ void cadastrarCliente(Cliente clientes[], int &qtdClientes) {
     }
 
     cout << "Nome: ";
+    cin >> c.nome;
     cin.ignore();
-    getline(cin, c.nome);
     cout << "Telefone: ";
-    getline(cin, c.telefone);
+    cin >> c.telefone;
+    cin.ignore();
     clientes[qtdClientes] = c; // Adiconar o cliente na qtdClientes
     qtdClientes++;
+}
+
+void salvar (Cliente clientes[], Filme filmes[], Ator atores[], int n) {
+    fstream meuArquivo;
+
+    meuArquivo.open("cliente.bin", ios::out | ios::binary);
+
+    if(meuArquivo.is_open()){
+        meuArquivo.write((char *)clientes, sizeof(clientes)*n);
+        meuArquivo.write((char *) &posC, sizeof(Cliente));
+        meuArquivo.write((char *)filmes, sizeof(filmes)*n);
+        meuArquivo.write((char *) &posF, sizeof(filmes));
+        meuArquivo.write((char *)atores, sizeof(atores)*n);
+        meuArquivo.write((char *) &posA, sizeof(Ator));
+        meuArquivo.close();
+        cout << "Informacoes salvas.\n";
+    }
+    else {
+        cout << "Falha ao salvar informacoes.\n";
+    }
+}
+
+void carregar (Cliente clientes[], Filme filmes[], Ator atores[], int n){
+    fstream meuArquivo;
+    meuArquivo.open("cliente.bin", ios::in | ios::binary);
+
+    if(meuArquivo.is_open()) {
+        meuArquivo.read(reinterpret_cast<char*>(clientes), sizeof(clientes) * n);
+        meuArquivo.read(reinterpret_cast<char*>(&posC), sizeof(posC) * n);
+        meuArquivo.read(reinterpret_cast<char*>(filmes), sizeof(filmes) * n);
+        meuArquivo.read(reinterpret_cast<char*>(&posF), sizeof(posF) * n);
+        meuArquivo.read(reinterpret_cast<char*>(atores), sizeof(atores) * n);
+        meuArquivo.read(reinterpret_cast<char*>(&posA), sizeof(posA) * n);
+        meuArquivo.close();
+        cout << "Informacoes carregadas com sucesso!!\n";
+    } else {
+        cout << "Falha ao carregar informacoes.\n";
+    }
 }
 
 
@@ -60,10 +106,11 @@ void cadastrarFilme(Filme filmes[], int &qtdFilmes, Cliente clientes[], int qtdC
     }
 
     cout << "Titulo: ";
+    cin >> f.titulo;
     cin.ignore();
-    getline(cin, f.titulo);
     cout << "Genero: ";
-    getline(cin, f.genero);
+    cin >> f.genero;
+    cin.ignore();
     cout << "Ano: ";
     cin >> f.ano;
 
@@ -92,8 +139,8 @@ void cadastrarAtor(Ator atores[], int &qtdAtor) {
     Ator a;
 
     cout << "Nome do ator: ";
+    cin >> a.nomeAtor;
     cin.ignore();
-    getline(cin, a.nomeAtor);
     atores[qtdAtor] = a;
     qtdAtor++;
 }
@@ -196,23 +243,32 @@ void mostraMenu(){
     cout << "6. Relatorio geral.\n";
     cout << "7. Cadastrar Ator.\n";
     cout << "8. Listar atores.\n";
-    cout << "9. Sair.\n";
+    cout << "9. Salvar informacoes de um arquivo.\n";
+    cout << "10. Carregar informacoes do arquivo.\n";
+    cout << "11. Sair.\n";
 }
 
 
 int main() {
-    Cliente clientes[100];
-    Filme filmes[100];
-    Ator atores [100];
+    Cliente clientes[50];
+    Filme filmes[50];
+    Ator atores [50];
     int qtdClientes = 0;
     int qtdFilmes = 0;
     int qtdAtor = 0;
     int opcao;
 
-    do {
+
+
+
+    while(true) {
         mostraMenu();
         cout << "Escolha uma opcao: ";
         cin >> opcao;
+
+        if(opcao == 11)
+            break;
+
 
         switch (opcao) {
             case 1:
@@ -242,10 +298,18 @@ int main() {
                 break;
             case 8 :
                 listarAtor(atores, qtdAtor);
+                break;
+            case 9:
+                salvar(clientes, filmes, atores, MAX);
+                break;
+            case 10:
+                carregar(clientes, filmes, atores, MAX);
+                break;
 
         }
 
-    } while (opcao != 9);
+    }
 
     return 0;
 }
+
