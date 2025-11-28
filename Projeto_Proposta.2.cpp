@@ -1,3 +1,4 @@
+
 #include <iostream>
 #include <string>
 using namespace std;
@@ -16,6 +17,11 @@ struct Filme {
     string genero;
     int ano;
     int idCliente;
+};
+
+struct Ator {
+    string nomeAtor;
+
 };
 
 void cadastrarCliente(Cliente clientes[], int &qtdClientes) {
@@ -82,6 +88,26 @@ void cadastrarFilme(Filme filmes[], int &qtdFilmes, Cliente clientes[], int qtdC
     qtdFilmes++;
 }
 
+void cadastrarAtor(Ator atores[], int &qtdAtor) {
+    Ator a;
+
+    cout << "Nome do ator: ";
+    cin.ignore();
+    getline(cin, a.nomeAtor);
+    atores[qtdAtor] = a;
+    qtdAtor++;
+}
+
+void listarAtor (Ator atores[], int qtdAtor){
+    if(qtdAtor == 0){
+        cout << "Nenhum cliente cadastrado.\n";
+        return;
+    }
+    for (int i = 0; i < qtdAtor; i++){
+        cout << "Nome do ator: " << atores[i].nomeAtor << endl;
+    }
+
+}
 // listar os clientes
 void listarClientes(Cliente clientes[], int qtdClientes) {
     if (qtdClientes == 0) {
@@ -168,15 +194,19 @@ void mostraMenu(){
     cout << "4. Listar filmes.\n";
     cout << "5. Buscar filmes por clientes.\n";
     cout << "6. Relatorio geral.\n";
-    cout << "7. Sair.\n";
+    cout << "7. Cadastrar Ator.\n";
+    cout << "8. Listar atores.\n";
+    cout << "9. Sair.\n";
 }
 
 
 int main() {
     Cliente clientes[100];
     Filme filmes[100];
+    Ator atores [100];
     int qtdClientes = 0;
     int qtdFilmes = 0;
+    int qtdAtor = 0;
     int opcao;
 
     do {
@@ -208,16 +238,14 @@ int main() {
                 relatorioGeral(clientes, qtdClientes, filmes, qtdFilmes);
                 break;
             case 7:
+                cadastrarAtor(atores, qtdAtor);
                 break;
-            default:
-                cout << "Opcao invalida!\n";
+            case 8 :
+                listarAtor(atores, qtdAtor);
+
         }
 
-    } while (opcao != 7);
+    } while (opcao != 9);
 
     return 0;
 }
-
-
-
-
