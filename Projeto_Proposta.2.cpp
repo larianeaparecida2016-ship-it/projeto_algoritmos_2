@@ -2,12 +2,6 @@
 #include <fstream>
 #include <cstring>
 
-#define MAX 3
-int posC = 0;
-int posF = 0;
-int posA = 0;
-
-
 using namespace std;
 
 
@@ -54,37 +48,41 @@ void cadastrarCliente(Cliente clientes[], int &qtdClientes) {
     qtdClientes++;
 }
 
-void salvar (Cliente clientes[], Filme filmes[], Ator atores[], int n) {
-    fstream meuArquivo;
+void salvar(Cliente clientes[], int qtdClientes, Filme filmes[], int qtdFilmes, Ator atores[], int qtdAtor) {
 
+    fstream meuArquivo;
     meuArquivo.open("cliente.bin", ios::out | ios::binary);
 
-    if(meuArquivo.is_open()){
-        meuArquivo.write((char *)clientes, sizeof(clientes)*n);
-        meuArquivo.write((char *) &posC, sizeof(Cliente));
-        meuArquivo.write((char *)filmes, sizeof(filmes)*n);
-        meuArquivo.write((char *) &posF, sizeof(filmes));
-        meuArquivo.write((char *)atores, sizeof(atores)*n);
-        meuArquivo.write((char *) &posA, sizeof(Ator));
+    if (meuArquivo.is_open()) {
+
+        meuArquivo.write(reinterpret_cast<char*>(&qtdClientes),sizeof(int));
+        meuArquivo.write(reinterpret_cast<char*>(&qtdFilmes),sizeof(int));
+        meuArquivo.write(reinterpret_cast<char*>(&qtdAtor),sizeof(int));
+        meuArquivo.write(reinterpret_cast<char*>(clientes),sizeof(Cliente) * qtdClientes);
+        meuArquivo.write(reinterpret_cast<char*>(filmes),sizeof(Filme) * qtdFilmes);
+        meuArquivo.write(reinterpret_cast<char*>(atores),sizeof(Ator) * qtdAtor);
+
         meuArquivo.close();
         cout << "Informacoes salvas.\n";
-    }
-    else {
+    } else {
         cout << "Falha ao salvar informacoes.\n";
     }
 }
 
-void carregar (Cliente clientes[], Filme filmes[], Ator atores[], int n){
+void carregar(Cliente clientes[], int &qtdClientes,Filme filmes[], int &qtdFilmes, Ator atores[], int &qtdAtor) {
+
     fstream meuArquivo;
     meuArquivo.open("cliente.bin", ios::in | ios::binary);
 
-    if(meuArquivo.is_open()) {
-        meuArquivo.read(reinterpret_cast<char*>(clientes), sizeof(clientes) * n);
-        meuArquivo.read(reinterpret_cast<char*>(&posC), sizeof(posC) * n);
-        meuArquivo.read(reinterpret_cast<char*>(filmes), sizeof(filmes) * n);
-        meuArquivo.read(reinterpret_cast<char*>(&posF), sizeof(posF) * n);
-        meuArquivo.read(reinterpret_cast<char*>(atores), sizeof(atores) * n);
-        meuArquivo.read(reinterpret_cast<char*>(&posA), sizeof(posA) * n);
+    if (meuArquivo.is_open()) {
+
+        meuArquivo.read(reinterpret_cast<char*>(&qtdClientes),sizeof(int));
+        meuArquivo.read(reinterpret_cast<char*>(&qtdFilmes),sizeof(int));
+        meuArquivo.read(reinterpret_cast<char*>(&qtdAtor),sizeof(int));
+        meuArquivo.read(reinterpret_cast<char*>(clientes),sizeof(Cliente) * qtdClientes);
+        meuArquivo.read(reinterpret_cast<char*>(filmes),sizeof(Filme) * qtdFilmes);
+        meuArquivo.read(reinterpret_cast<char*>(atores),sizeof(Ator) * qtdAtor);
+
         meuArquivo.close();
         cout << "Informacoes carregadas com sucesso!!\n";
     } else {
@@ -300,10 +298,10 @@ int main() {
                 listarAtor(atores, qtdAtor);
                 break;
             case 9:
-                salvar(clientes, filmes, atores, MAX);
+                salvar(clientes, qtdClientes, filmes, qtdFilmes, atores, qtdAtor);
                 break;
             case 10:
-                carregar(clientes, filmes, atores, MAX);
+                carregar(clientes, qtdClientes, filmes, qtdFilmes, atores, qtdAtor);
                 break;
 
         }
